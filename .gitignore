@@ -16,3 +16,5 @@ LBM-C/Release
 *.sdf
 *.suo
 *.user
+*.kdev4
+build

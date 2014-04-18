@@ -8,15 +8,7 @@
 #include <vector>
 using namespace std;
 /* cgnslib.h file must be located in directory specified by -I during compile: */
-
-#if CGNS_VERSION < 3100
-# define cgsize_t int
-#else
-# if CG_BUILD_SCOPE
-#  error enumeration scoping needs to be off
-# endif
-#endif
-
+#include <cgnslib.h>
 #define STR_LENGTH 31
 
 class CGNSInputHandler
@@ -60,7 +52,7 @@ public:
 		int num_arrays;
 
 		//unused pointers;
-		DataType_t d_type;
+		CG_DataType_t d_type;
 		int d_dim;
 		cgsize_t d_dim_vector;
 

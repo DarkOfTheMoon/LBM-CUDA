@@ -36,7 +36,8 @@ class InfileReader {
 		string line_part;
 		while(getline(data_file, line_tot))
 		{
-			getline(stringstream(line_tot),line_part,'#');
+// 			getline(stringstream(line_tot),line_part,'#');
+			line_tot.copy((char *)line_part.c_str(),line_tot.find('#')-1);
 			process_data_field(line_part, line_tot);
 
 		}
@@ -48,26 +49,27 @@ class InfileReader {
 		string field_name;
 		if (line.find("ProjName")!=string::npos)
 		{
-			stringstream(line) >> field_name >> project->name;
+			//中间有空格
+			stringstream(line)>>&(stringbuf)field_name >> project->name;
 			cout << field_name << " = " << project->name << endl;
 		}
 		else if (line.find("DomainFile")!=string::npos)
 		{
-			stringstream(line) >> field_name >> project->domain_fname;
+			stringstream(line) >> &(stringbuf)field_name >> project->domain_fname;
 			cout << field_name << " = " << project->domain_fname << endl;
 		}
 		else if (line.find("OutputFile")!=string::npos)
 		{
-			stringstream(line) >> field_name >> project->output_fname;
+			stringstream(line) >> &(stringbuf)field_name >> project->output_fname;
 			cout << field_name << " = " << project->output_fname << endl;
 		}
 		else if (line.find("TauMRT")!=string::npos)
 		{
 			string screen_label = "S_";
 #if DIM < 3
-			stringstream(line) >> field_name >> domain_constants->tau_mrt[0] >> domain_constants->tau_mrt[1] >> domain_constants->tau_mrt[2] >> domain_constants->tau_mrt[3] >> domain_constants->tau_mrt[4] >> domain_constants->tau_mrt[5] >> domain_constants->tau_mrt[6] >> domain_constants->tau_mrt[7] >> domain_constants->tau_mrt[8];
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->tau_mrt[0] >> domain_constants->tau_mrt[1] >> domain_constants->tau_mrt[2] >> domain_constants->tau_mrt[3] >> domain_constants->tau_mrt[4] >> domain_constants->tau_mrt[5] >> domain_constants->tau_mrt[6] >> domain_constants->tau_mrt[7] >> domain_constants->tau_mrt[8];
 #else
-			stringstream(line) >> field_name >> domain_constants->tau_mrt[0] >> domain_constants->tau_mrt[1] >> domain_constants->tau_mrt[2] >> domain_constants->tau_mrt[3] >> domain_constants->tau_mrt[4] >> domain_constants->tau_mrt[5] >> domain_constants->tau_mrt[6] >> domain_constants->tau_mrt[7] >> domain_constants->tau_mrt[8] >> domain_constants->tau_mrt[9] >> domain_constants->tau_mrt[10] >> domain_constants->tau_mrt[11] >> domain_constants->tau_mrt[12] >> domain_constants->tau_mrt[13] >> domain_constants->tau_mrt[14];
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->tau_mrt[0] >> domain_constants->tau_mrt[1] >> domain_constants->tau_mrt[2] >> domain_constants->tau_mrt[3] >> domain_constants->tau_mrt[4] >> domain_constants->tau_mrt[5] >> domain_constants->tau_mrt[6] >> domain_constants->tau_mrt[7] >> domain_constants->tau_mrt[8] >> domain_constants->tau_mrt[9] >> domain_constants->tau_mrt[10] >> domain_constants->tau_mrt[11] >> domain_constants->tau_mrt[12] >> domain_constants->tau_mrt[13] >> domain_constants->tau_mrt[14];
 #endif		
 			for(int i =0; i<Q; i++)
 			{
@@ -77,23 +79,23 @@ class InfileReader {
 		}
 		else if (line.find("Tau")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->tau;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->tau;
 			cout << field_name << " = " << domain_constants->tau << endl;
 		}
 		else if (line.find("Lx")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->length[0];
+			stringstream(line) >>&(stringbuf) field_name >> domain_constants->length[0];
 			cout << field_name << " = " << domain_constants->length[0] << endl;
 		}
 		else if (line.find("Ly")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->length[1];
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->length[1];
 			cout << field_name << " = " << domain_constants->length[1] << endl;
 		}
 		else if (line.find("Lz")!=string::npos)
 		{
 			int tmp;
-			stringstream(line) >> field_name >> tmp;
+			stringstream(line) >> &(stringbuf)field_name >> tmp;
 			//check for 2d
 			#if DIM > 2
 				domain_constants->length[2] = tmp;
@@ -102,17 +104,17 @@ class InfileReader {
 		}
 		else if (line.find("DeltaX")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->h;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->h;
 			cout << field_name << " = " << domain_constants->h << endl;
 		}
 		else if (line.find("DeltaT")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->dt;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->dt;
 			cout << field_name << " = " << domain_constants->dt << endl;
 		}
 		else if (line.find("C_smag")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->c_smag;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->c_smag;
 			cout << field_name << " = " << domain_constants->c_smag << endl;
 		}
 		else if (line.find("ColType")!=string::npos)
@@ -139,58 +141,58 @@ class InfileReader {
 				col_type = "MRTPOR";
 				domain_constants->collision_type = 3;
 			}
-			stringstream(line) >> field_name;
+			stringstream(line) >> &(stringbuf)field_name;
 			cout << field_name << " = " << col_type << endl;
 		}
 		else if (line.find("Force")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->forcing;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->forcing;
 			cout << field_name << " = " << domain_constants->forcing << endl;
 		}
 		else if (line.find("MicroBC")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->micro_bc;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->micro_bc;
 			cout << field_name << " = " << domain_constants->micro_bc << endl;
 		}
 		else if (line.find("MacroBC")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->macro_bc;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->macro_bc;
 			cout << field_name << " = " << domain_constants->macro_bc << endl;
 		}
 		else if (line.find("Tolerance")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->tolerance;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->tolerance;
 			cout << field_name << " = " << domain_constants->tolerance << endl;
 		}
 		else if (line.find("Init")!=string::npos)
 		{
-			stringstream(line) >> field_name >> domain_constants->init_type;
+			stringstream(line) >> &(stringbuf)field_name >> domain_constants->init_type;
 			cout << field_name << " = " << domain_constants->init_type << endl;
 		}
 		else if (line.find("MaxT")!=string::npos)
 		{
-			stringstream(line) >> field_name >> timer->max;
+			stringstream(line) >> &(stringbuf)field_name >> timer->max;
 			cout << field_name << " = " << timer->max << endl;
 		}
 		else if (line.find("FileOut")!=string::npos)
 		{
-			stringstream(line) >> field_name >> timer->plot;
+			stringstream(line) >> &(stringbuf)field_name >> timer->plot;
 			cout << field_name << " = " << timer->plot << endl;
 		}
 		else if (line.find("ScreenMes")!=string::npos)
 		{
-			stringstream(line) >> field_name >> timer->screen;
+			stringstream(line) >> &(stringbuf)field_name >> timer->screen;
 			cout << field_name << " = " << timer->screen << endl;
 		}
 		else if (line.find("SteadyCheck")!=string::npos)
 		{
-			stringstream(line) >> field_name >> timer->steady_check;
+			stringstream(line) >> &(stringbuf)field_name >> timer->steady_check;
 			cout << field_name << " = " << timer->steady_check << endl;
 		}
 		else if (line.find("OutputVars")!=string::npos)
 		{
 			bool tmp;
-			stringstream(line) >> field_name >> output_controller->u[0] >> output_controller->u[1] >> tmp >> output_controller->rho >> output_controller->pressure;
+			stringstream(line) >> &(stringbuf)field_name >> output_controller->u[0] >> output_controller->u[1] >> tmp >> output_controller->rho >> output_controller->pressure;
 			#if DIM > 2
 				if(domain_constants->length[2]>0) output_controller->u[2] = tmp;
 			#endif
@@ -205,7 +207,7 @@ class InfileReader {
 		else if (line.find("ScreenNode")!=string::npos)
 		{
 			int tmp;
-			stringstream(line) >> field_name >> output_controller->screen_node[0] >> output_controller->screen_node[1] >> tmp;
+			stringstream(line) >> &(stringbuf)field_name >> output_controller->screen_node[0] >> output_controller->screen_node[1] >> tmp;
 			#if DIM > 2
 				if(domain_constants->length[2]>0) output_controller->screen_node[2] = tmp;
 			#endif
@@ -218,7 +220,7 @@ class InfileReader {
 
 		else if (line.find("Interactive")!=string::npos)
 		{
-			stringstream(line) >> field_name >> output_controller->interactive;
+			stringstream(line) >> &(stringbuf)field_name >> output_controller->interactive;
 			cout << field_name << " = " << output_controller->interactive << endl;
 		} else {
 			cout << line_tot << endl;

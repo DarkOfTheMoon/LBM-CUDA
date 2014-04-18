@@ -37,25 +37,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef _WIN64
-	#pragma comment(lib, "cgns/x64/lib/cgns.lib")
-	#include "cgns\x64\include\cgnslib.h"
-	#pragma comment(lib, "HDF5/x64/lib/hdf5.lib")
-	#include "HDF5/x64/include/hdf5.h"
-	#pragma comment(lib, "HDF5/x64/lib/libszip.lib")
-	#include "HDF5/x64/include/szlib.h"
-	#pragma comment(lib, "HDF5/x64/lib/libzlib.lib")
-	#include "HDF5/x64/include/zlib.h"
-#else
-	#pragma comment(lib, "cgns/x86/lib/cgns.lib")
-	#include "cgns\x86\include\cgnslib.h"
-	#pragma comment(lib, "HDF5/x86/lib/hdf5.lib")
-	#include "HDF5/x86/include/hdf5.h"
-	#pragma comment(lib, "HDF5/x86/lib/libszip.lib")
-	#include "HDF5/x86/include/szlib.h"
-	#pragma comment(lib, "HDF5/x86/lib/libzlib.lib")
-	#include "HDF5/x86/include/zlib.h"
-#endif
+#include <cgnslib.h>
+#include <hdf5.h>
+#include <zlib.h>
 
 #include <stdio.h>
 #include "data_types.cuh"
@@ -102,6 +86,8 @@ int main(int argc, char **argv)
 	size_t totalMemory_before = 0;
 	cudaMemGetInfo(&freeMemory_before, &totalMemory_before);
 	
+	std::cout<<totalMemory_before<<std::endl;
+
 	// Initialise memory for LBM model
 	setup(argv[1]);
 	
@@ -197,6 +183,7 @@ void setup(char *data_file)
 	cudaFuncSetCacheConfig(iterate_kernel, cudaFuncCachePreferL1);
 	
 	// Allocate container structures
+	std::cout<<__FILE__<<":"<<__LINE__<<std::endl;
 	combi_malloc<Lattice>(&lattice_host, &lattice_device, sizeof(Lattice));
 	combi_malloc<Domain>(&domain_host, &domain_device, sizeof(Domain));
 	combi_malloc<DomainConstant>(&domain_constants_host, &domain_constants_device, sizeof(DomainConstant));
@@ -374,6 +361,7 @@ void iterate(int t)
 double current_RMS(double *device_var_u[DIM], double *device_var_rho, int var_size)
 {
 	double *result;
+	std::cout<<__FILE__<<__LINE__<<std::endl;
 	cudasafe(cudaMalloc((void **)&result,sizeof(double)*var_size), "Model Builder: Device memory allocation failed!");
 
 	// wrap raw pointer with a device_ptr for thrust compatibility

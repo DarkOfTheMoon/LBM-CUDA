@@ -7,17 +7,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <cgnslib.h>
 using namespace std;
-/* cgnslib.h file must be located in directory specified by -I during compile: */
-
-
-#if CGNS_VERSION < 3100
-# define cgsize_t int
-#else
-# if CG_BUILD_SCOPE
-#  error enumeration scoping needs to be off
-# endif
-#endif
 
 #define STR_LENGTH 31
 
@@ -118,7 +109,7 @@ class CGNSOutputHandler
 		    isize2d[2][1]=0;
 
 			// create zone 
-			cgns_error_check(cg_zone_write(index_file,index_base,zonename,*isize2d,Structured,&index_zone));
+			cgns_error_check(cg_zone_write(index_file,index_base,zonename,*isize2d,CG_Structured,&index_zone));
 		} else {
 			// vertex size 
 			isize3d[0][0]=ni_v;
@@ -134,16 +125,16 @@ class CGNSOutputHandler
 		    isize3d[2][2]=0;
 
 			// create zone 
-			cgns_error_check(cg_zone_write(index_file,index_base,zonename,*isize3d,Structured,&index_zone));
+			cgns_error_check(cg_zone_write(index_file,index_base,zonename,*isize3d,CG_Structured,&index_zone));
 		}
 		
 	// write grid coordinates (user must use SIDS-standard names here) 
-	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,RealSingle,"CoordinateX",
+	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,CG_RealSingle,"CoordinateX",
 	       x,&index_coord));
-	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,RealSingle,"CoordinateY",
+	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,CG_RealSingle,"CoordinateY",
 	       y,&index_coord));
 	   if(nk_c!=1){
-	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,RealSingle,"CoordinateZ",
+	   cgns_error_check(cg_coord_write(index_file,index_base,index_zone,CG_RealSingle,"CoordinateZ",
 	       z,&index_coord));
 	   }
 
@@ -169,7 +160,7 @@ class CGNSOutputHandler
 
 	void cgns_append_sol_field(double *field, char *name, int *index_field)
 	{
-		cgns_error_check(cg_field_write(index_file,index_base,index_zone,index_flow,RealDouble,name,field,index_field));
+		cgns_error_check(cg_field_write(index_file,index_base,index_zone,index_flow,CG_RealDouble,name,field,index_field));
 	}
 
 	void write_iterative_data()
@@ -186,7 +177,7 @@ class CGNSOutputHandler
 		cgns_error_check(cg_biter_write(index_file,index_base,"TimeIterValues",nsteps));
 	// go to BaseIterativeData level and write time values
 		cgns_error_check(cg_goto(index_file,index_base,"BaseIterativeData_t",1,"end"));
-		cgns_error_check(cg_array_write("IterationValues",Integer,1,nsteps_cg,soltime_a));
+		cgns_error_check(cg_array_write("IterationValues",CG_Integer,1,nsteps_cg,soltime_a));
 	// create ZoneIterativeData
 		cgns_error_check(cg_ziter_write(index_file,index_base,index_zone,"ZoneIterativeData_t"));
 	// go to ZoneIterativeData level and give info telling which
@@ -197,10 +188,10 @@ class CGNSOutputHandler
 		cgsize_t idata[2];
 		idata[0] = STR_LENGTH+1;
 		idata[1] = nsteps;
-		cgns_error_check(cg_array_write("FlowSolutionPointers",Character,2,idata,solname_a));
+		cgns_error_check(cg_array_write("FlowSolutionPointers",CG_Character,2,idata,solname_a));
 
 	// add SimulationType
-		cgns_error_check(cg_simulation_type_write(index_file,index_base,TimeAccurate));
+		cgns_error_check(cg_simulation_type_write(index_file,index_base,CG_TimeAccurate));
 		free_tmp_storage();
 	}
 
@@ -277,7 +268,7 @@ public:
 		node_name_c[node_name_s.size()] = '\0';
 
 		// create flow solution node
-		cgns_error_check(cg_sol_write(index_file,index_base,index_zone,node_name_c, CellCenter,&index_flow));
+		cgns_error_check(cg_sol_write(index_file,index_base,index_zone,node_name_c, CG_CellCenter,&index_flow));
 
 		// write flow solution field
 		for(int n = 0; n<num_fields;n++)
