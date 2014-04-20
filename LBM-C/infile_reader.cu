@@ -5,9 +5,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <libraryInterfaces/TINYXML_xmlIO.h>
-#include <libraryInterfaces/TINYXML_xmlIO.hh>
-#include <libraryInterfaces/TINYXML_xmlIO.cpp>
+#include "TINYXML_xmlIO.h"
+#include "TINYXML_xmlIO.hh"
 using namespace std;
 
 class InfileReader
@@ -23,79 +22,74 @@ class InfileReader
         domain_constants->c_smag = 0;
     }
 
-    void parse_file ( plb::XMLreader const& document )
+    void parse_file ( XMLreader const& document )
     {
-		std::string tmp;
-        document["ProjName"].read (project->name );
-
-		std::cout<<project->name<<std::endl;
-		exit(0);
-
-        document["DomainFile"].read ( project->domain_fname );
-        document["OutputFile"].read ( project->output_fname );
-        document["TauMRT"]["TauMRT0"].read ( domain_constants->tau_mrt[0] );
-        document["TauMRT"]["TauMRT1"].read ( domain_constants->tau_mrt[1] );
-        document["TauMRT"]["TauMRT2"].read ( domain_constants->tau_mrt[2] );
-        document["TauMRT"]["TauMRT3"].read ( domain_constants->tau_mrt[3] );
-        document["TauMRT"]["TauMRT4"].read ( domain_constants->tau_mrt[4] );
-        document["TauMRT"]["TauMRT5"].read ( domain_constants->tau_mrt[5] );
-        document["TauMRT"]["TauMRT6"].read ( domain_constants->tau_mrt[6] );
-        document["TauMRT"]["TauMRT7"].read ( domain_constants->tau_mrt[7] );
-        document["TauMRT"]["TauMRT8"].read ( domain_constants->tau_mrt[8] );
+        document["Project"]["ProjName"].read ( project->name );
+        document["Project"]["DomainFile"].read ( project->domain_fname );
+        document["Project"]["OutputFile"].read ( project->output_fname );
+        document["Project"]["DomainConst"]["TauMRT"]["TauMRT0"].read ( domain_constants->tau_mrt[0] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT1"].read ( domain_constants->tau_mrt[1] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT2"].read ( domain_constants->tau_mrt[2] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT3"].read ( domain_constants->tau_mrt[3] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT4"].read ( domain_constants->tau_mrt[4] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT5"].read ( domain_constants->tau_mrt[5] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT6"].read ( domain_constants->tau_mrt[6] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT7"].read ( domain_constants->tau_mrt[7] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT8"].read ( domain_constants->tau_mrt[8] );
 #if DIM>2
-        document["TauMRT"]["TauMRT9"].read ( domain_constants->tau_mrt[9] );
-        document["TauMRT"]["TauMRT10"].read ( domain_constants->tau_mrt[10] );
-        document["TauMRT"]["TauMRT11"].read ( domain_constants->tau_mrt[11] );
-        document["TauMRT"]["TauMRT12"].read ( domain_constants->tau_mrt[12] );
-        document["TauMRT"]["TauMRT13"].read ( domain_constants->tau_mrt[13] );
-        document["TauMRT"]["TauMRT14"].read ( domain_constants->tau_mrt[14] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT9"].read ( domain_constants->tau_mrt[9] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT10"].read ( domain_constants->tau_mrt[10] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT11"].read ( domain_constants->tau_mrt[11] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT12"].read ( domain_constants->tau_mrt[12] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT13"].read ( domain_constants->tau_mrt[13] );
+		document["Project"]["DomainConst"]["TauMRT"]["TauMRT14"].read ( domain_constants->tau_mrt[14] );
 #endif
-        document["Tau"].read ( domain_constants->tau );
+		document["Project"]["DomainConst"]["Tau"].read ( domain_constants->tau );
 
-        document["Geometry"]["DeltaX"].read ( domain_constants->h );
-        document["Geometry"]["x"].read ( domain_constants->length[0] );
-        document["Geometry"]["y"].read ( domain_constants->length[1] );
+		document["Project"]["DomainConst"]["Geometry"]["DeltaX"].read ( domain_constants->h );
+		document["Project"]["DomainConst"]["Geometry"]["x"].read ( domain_constants->length[0] );
+		document["Project"]["DomainConst"]["Geometry"]["y"].read ( domain_constants->length[1] );
 #if DIM >2
-        document["Geometry"]["z"].read ( domain_constants->length[2] );
+		document["Project"]["DomainConst"]["Geometry"]["z"].read ( domain_constants->length[2] );
 #endif
-        document["DeltaT"].read ( domain_constants->dt );
-        document["C_smag"].read ( domain_constants->c_smag );
+		document["Project"]["DomainConst"]["DeltaT"].read ( domain_constants->dt );
+		document["Project"]["DomainConst"]["C_smag"].read ( domain_constants->c_smag );
         //TODO enum{BGK,NTPOR,MRT,MRTPOR}
-        document["ColType"].read ( domain_constants->collision_type );
+		document["Project"]["DomainConst"]["ColType"].read ( domain_constants->collision_type );
 
-        document["Force"].read ( domain_constants->forcing );
-        document["MicroBC"].read ( domain_constants->micro_bc );
-        document["MacroBC"].read ( domain_constants->macro_bc );
-        document["Tolerance"].read ( domain_constants->tolerance );
-        document["Init"].read ( domain_constants->init_type );
-        document["MaxT"].read ( timer->max );
-        document["FileOut"].read ( timer->plot );
-        document["ScreenMes"].read ( timer->screen );
+		document["Project"]["DomainConst"]["Force"].read ( domain_constants->forcing );
+		document["Project"]["DomainConst"]["MicroBC"].read ( domain_constants->micro_bc );
+		document["Project"]["DomainConst"]["MacroBC"].read ( domain_constants->macro_bc );
+		document["Project"]["DomainConst"]["Tolerance"].read ( domain_constants->tolerance );
+		document["Project"]["DomainConst"]["Init"].read ( domain_constants->init_type );
 
-        document["SteadyCheck"].read ( timer->steady_check );
+        document["Project"]["Timer"]["MaxT"].read ( timer->max );
+		document["Project"]["Timer"]["FileOut"].read ( timer->plot );
+		document["Project"]["Timer"]["ScreenMes"].read ( timer->screen );
+		document["Project"]["Timer"]["SteadyCheck"].read ( timer->steady_check );
 
-        document["OutputVars"]["u"].read ( output_controller->u[0] );
-        document["OutputVars"]["v"].read ( output_controller->u[1] );
+        document["Project"]["OutPutController"]["OutputVars"]["u"].read ( output_controller->u[0] );
+		document["Project"]["OutPutController"]["OutputVars"]["v"].read ( output_controller->u[1] );
 #if DIM >2
-        document["OutputVars"]["w"].read ( output_controller->u[2] );
+		document["Project"]["OutPutController"]["OutputVars"]["w"].read ( output_controller->u[2] );
 #endif
-        document["OutputVars"]["rho"].read ( output_controller->rho );
-        document["OutputVars"]["pressure"].read ( output_controller->pressure );
+		document["Project"]["OutPutController"]["OutputVars"]["rho"].read ( output_controller->rho );
+		document["Project"]["OutPutController"]["OutputVars"]["pressure"].read ( output_controller->pressure );
 
-        document["ScreenNode"]["x"].read ( output_controller->screen_node[0] );
-        document["ScreenNode"]["y"].read ( output_controller->screen_node[1] );
+		document["Project"]["OutPutController"]["ScreenNode"]["x"].read ( output_controller->screen_node[0] );
+		document["Project"]["OutPutController"]["ScreenNode"]["y"].read ( output_controller->screen_node[1] );
 #if DIM >2
-        document["ScreenNode"]["z"].read ( output_controller->screen_node[2] );
+		document["Project"]["OutPutController"]["ScreenNode"]["z"].read ( output_controller->screen_node[2] );
 #endif
-        document["Interactive"].read ( output_controller->interactive );
-
+		document["Project"]["OutPutController"]["Interactive"].read ( output_controller->interactive );
+		exit(0);
     }
 
 public:
-    InfileReader ( plb::XMLreader const& document, ProjectStrings*, DomainConstant *,Timing *,OutputController * );
+    InfileReader ( XMLreader const& document, ProjectStrings*, DomainConstant *,Timing *,OutputController * );
 };
 
-InfileReader::InfileReader ( plb::XMLreader const& document, ProjectStrings *project_in, DomainConstant *domain_constants_in, Timing *timer_in, OutputController *output_controller_in )
+InfileReader::InfileReader ( XMLreader const& document, ProjectStrings *project_in, DomainConstant *domain_constants_in, Timing *timer_in, OutputController *output_controller_in )
 {
     project = project_in;
     domain_constants = domain_constants_in;
@@ -109,6 +103,7 @@ InfileReader::InfileReader ( plb::XMLreader const& document, ProjectStrings *pro
 
     cout << endl << "Finished reading configuration data." << endl;
 }
+
 
 
 
