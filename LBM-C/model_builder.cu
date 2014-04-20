@@ -174,7 +174,7 @@ class ModelBuilder
 	void variable_loader()
 	{
 		// LOAD GEOMETRY
-		CGNSInputHandler input_handler((char*)project_t->domain_fname.c_str(), domain_constants_h->length);
+		CGNSInputHandler input_handler(project_t->domain_fname, domain_constants_h->length);
 		input_handler.read_field(domain_h->geometry, "Porosity");
 		cudasafe(cudaMemcpy(geometry_d, geometry_h, sizeof(double)*domain_size,cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
 

@@ -42,20 +42,22 @@ class InfileReader
         document["TauMRT"]["TauMRT6"].read ( domain_constants->tau_mrt[6] );
         document["TauMRT"]["TauMRT7"].read ( domain_constants->tau_mrt[7] );
         document["TauMRT"]["TauMRT8"].read ( domain_constants->tau_mrt[8] );
+#if DIM>2
         document["TauMRT"]["TauMRT9"].read ( domain_constants->tau_mrt[9] );
         document["TauMRT"]["TauMRT10"].read ( domain_constants->tau_mrt[10] );
         document["TauMRT"]["TauMRT11"].read ( domain_constants->tau_mrt[11] );
         document["TauMRT"]["TauMRT12"].read ( domain_constants->tau_mrt[12] );
         document["TauMRT"]["TauMRT13"].read ( domain_constants->tau_mrt[13] );
         document["TauMRT"]["TauMRT14"].read ( domain_constants->tau_mrt[14] );
-
+#endif
         document["Tau"].read ( domain_constants->tau );
 
         document["Geometry"]["DeltaX"].read ( domain_constants->h );
         document["Geometry"]["x"].read ( domain_constants->length[0] );
         document["Geometry"]["y"].read ( domain_constants->length[1] );
+#if DIM >2
         document["Geometry"]["z"].read ( domain_constants->length[2] );
-
+#endif
         document["DeltaT"].read ( domain_constants->dt );
         document["C_smag"].read ( domain_constants->c_smag );
         //TODO enum{BGK,NTPOR,MRT,MRTPOR}
@@ -74,14 +76,17 @@ class InfileReader
 
         document["OutputVars"]["u"].read ( output_controller->u[0] );
         document["OutputVars"]["v"].read ( output_controller->u[1] );
+#if DIM >2
         document["OutputVars"]["w"].read ( output_controller->u[2] );
+#endif
         document["OutputVars"]["rho"].read ( output_controller->rho );
         document["OutputVars"]["pressure"].read ( output_controller->pressure );
 
         document["ScreenNode"]["x"].read ( output_controller->screen_node[0] );
         document["ScreenNode"]["y"].read ( output_controller->screen_node[1] );
+#if DIM >2
         document["ScreenNode"]["z"].read ( output_controller->screen_node[2] );
-
+#endif
         document["Interactive"].read ( output_controller->interactive );
 
     }

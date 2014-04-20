@@ -7,7 +7,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=gnu++0x)
 endif()
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 set(CMAKE_CXX_LINK_FLAGS "-Wl,-Bsymbolic-functions -Wl,-z,relro ${CMAKE_CXX_LINK_FLAGS}")
 if(CUDA_FOUND)
 	include_directories(${CUDA_INCLUDE_DIRS})

@@ -477,7 +477,7 @@ __device__ void meq_d2q9(Node *current_node, double *meq)
 	meq[7] = jx*jx-jy*jy;
 	meq[8] = jx*jy;
 }
-
+#if DIM>2
 __device__ void meq_d3q15(Node *current_node, double *meq)
 {
 	double jx = current_node->rho*current_node->u[0];
@@ -501,4 +501,5 @@ __device__ void meq_d3q15(Node *current_node, double *meq)
 	meq[13] = jx*jz;
 	meq[14] = 0;
 }
+#endif
 #endif

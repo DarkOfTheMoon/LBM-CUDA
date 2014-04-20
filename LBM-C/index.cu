@@ -239,7 +239,6 @@ void output_macros ( int time )
         cudasafe ( cudaMemcpy ( domain_host->u[d], u_tmp[d], sizeof ( double ) *domain_size,cudaMemcpyDeviceToHost ),"Model Builder: Copy from device memory failed!" );
     }
 
-    double *rho_tmp;
     cudasafe ( cudaMemcpy ( domain_host->rho, domain_tmp.rho, sizeof ( double ) *domain_size,cudaMemcpyDeviceToHost ),"Model Builder: Copy from device memory failed!" );
 
     // Copy data from device to host

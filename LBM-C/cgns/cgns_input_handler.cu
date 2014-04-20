@@ -2,27 +2,26 @@
 #define CGNS_INPUT_HANDLER
 
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include <iostream>
 #include <sstream>
 #include <vector>
 using namespace std;
 /* cgnslib.h file must be located in directory specified by -I during compile: */
 #include <cgnslib.h>
-#define STR_LENGTH 31
 
 class CGNSInputHandler
 {
 
-	char *fname;
+	string fname;
 
 	// CGNS variables
 	int index_file;
-	int length[3];
+	int length[DIM];
 
 	void open_file()
 	{
-		cgns_error_check(cg_open(fname,CG_MODE_READ,&index_file));
+		cgns_error_check(cg_open(fname.c_str(),CG_MODE_READ,&index_file));
 	}
 
 	void close_file()
@@ -42,31 +41,29 @@ class CGNSInputHandler
 	}
 
 public:
-	CGNSInputHandler (char *, int [DIM]);
+	CGNSInputHandler (const string &input_filename, int [DIM]);
 
 	CGNSInputHandler ();
 
 	template<class T>
 	void read_field(T *data, char *label)
 	{
+#warning fix function
 		int num_arrays;
 
 		//unused pointers;
 		CG_DataType_t d_type;
-		int d_dim;
-		cgsize_t d_dim_vector;
 
 		bool field_found = false;
 		int i;
 		char array_name[30];
 
-		cgsize_t min[3], max[3];
-		min[0] = 1;
-		min[1] = 1;
-		min[2] = 1;
-		max[0] = length[0];
-		max[1] = length[1];
-		max[2] = length[2];
+		cgsize_t min[DIM], max[DIM];
+
+		for(int i=0;i!=DIM;i++){
+			min[i]=1;
+			max[i]=length[i];
+		}
 
 		open_file();
 
@@ -96,18 +93,12 @@ public:
 
 };
 
-CGNSInputHandler::CGNSInputHandler (char *input_filename, int length_in[DIM]) 
+CGNSInputHandler::CGNSInputHandler ( const string &input_filename, int length_in[DIM])
 {
 	fname = input_filename;
 
-	length[0] = length_in[0];
-	length[1] = length_in[1];
-
-	#if DIM > 2
-		length[2] = length_in[2];
-	#else
-		length[2] = 1;
-	#endif
+	for(int i=0;i!=DIM;++i)
+		length[i]=length_in[i];
 
 	open_file();
 

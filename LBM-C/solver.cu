@@ -72,7 +72,6 @@ __global__ void iterate_kernel (Lattice *lattice, Domain *domain, bool store_mac
 		}
 
 		// COALESCED READ
-		int target_coord[DIM];
 		#pragma unroll
 		for(i = 0; i<Q; i++)
 		{
