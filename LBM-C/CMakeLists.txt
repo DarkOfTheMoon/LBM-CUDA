@@ -1,5 +1,5 @@
 
 
-cuda_add_executable(LBM-C index.cu)
+cuda_add_executable(LBM-C index.cu TINYXML_xmlIO.cpp)
 
-target_link_libraries(LBM-C  cgns ${HDF5_CXX_LIBRARY_NAMES_INIT} ${CUDA_LIBRARIES} Palabos tinyxml)
+target_link_libraries(LBM-C  cgns ${HDF5_LIBRARIES} ${CUDA_LIBRARIES} tinyxml)

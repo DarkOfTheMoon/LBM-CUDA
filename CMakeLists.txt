@@ -15,6 +15,13 @@ else(CUDA_FOUND)
 	message(FATAL_ERROR "CUDA NOT FOUND")
 endif(CUDA_FOUND)
 
+
+find_package(MPI REQUIRED)
+
+if(MPI_CXX_FOUND)
+include_directories(${MPI_CXX_INCLUDE_PATH})
+endif(MPI_CXX_FOUND)
+
 find_package(HDF5 REQUIRED)
 
 if(HDF5_FOUND)
@@ -24,7 +31,7 @@ else(HDF5_FOUND)
 endif(HDF5_FOUND)
 # set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-gencode arch=compute_20,code=sm_20)
 
-include_directories(/usr/include/Palabos-1.4)
+# include_directories(/usr/include/Palabos-1.4)
 
 add_definitions(-DD2Q9)
 add_subdirectory(LBM-C)
