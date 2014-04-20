@@ -55,7 +55,6 @@
 #include <thrust/for_each.h>
 #include <thrust/iterator/zip_iterator.h>
 #include <thrust/device_vector.h>
-
 // DEVICE VARIABLE DECLARATION
 Lattice *lattice_device;
 Domain *domain_device;
@@ -194,7 +193,7 @@ void setup ( char *data_file )
     combi_malloc<OutputController> ( &output_controller_host, &output_controller_device, sizeof ( OutputController ) );
     domain_constants_host = ( DomainConstant * ) malloc ( sizeof ( DomainConstant ) );
     times = ( Timing * ) malloc ( sizeof ( Timing ) );
-    project = ( ProjectStrings * ) malloc ( sizeof ( ProjectStrings ) );
+    project = new ProjectStrings;
     lattice_device_prototype = ( Lattice * ) malloc ( sizeof ( Lattice ) );
 
     ModelBuilder tmpmb ( data_file, lattice_host, lattice_device,
