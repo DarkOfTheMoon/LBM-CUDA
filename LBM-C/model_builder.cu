@@ -63,7 +63,7 @@ class ModelBuilder
 	void constant_loader()
 	{
 		// LOAD CONSTANTS FROM FILE
-		plb::XMLreader document(fname_config);
+		XMLreader document(fname_config);
 		InfileReader infile_reader(document, project_t, domain_constants_h, time_t, output_controller_h);
 
 		// LOAD LATTICE CONSTANTS
