@@ -21,7 +21,7 @@ class ModelBuilder
 	Lattice *lattice_d;
 	Domain *domain_d;
 	DomainConstant *domain_constants_d;
-	double **f_d, *rho_d, **u_d, *geometry_d, **force_d; 
+	double **f_d, *rho_d, **u_d, *geometry_d, **force_d;
 	int *micro_bc_d;
 	int *macro_bc_d;
 
@@ -63,8 +63,9 @@ class ModelBuilder
 	void constant_loader()
 	{
 		// LOAD CONSTANTS FROM FILE
-		InfileReader infile_reader(fname_config, project_t, domain_constants_h, time_t, output_controller_h);
-		
+		plb::XMLreader document(fname_config);
+		InfileReader infile_reader(document, project_t, domain_constants_h, time_t, output_controller_h);
+
 		// LOAD LATTICE CONSTANTS
 		LOAD_E(domain_constants_h->e);
 		LOAD_OMEGA(domain_constants_h->omega);
@@ -105,7 +106,7 @@ class ModelBuilder
 
 		// RHO
 		combi_malloc<double>(&rho_h, &rho_d, domain_data_size);
-		
+
 		// VELOCITY
 		double *u_tmp[DIM];
 		combi_malloc<double*>(&u_h, &u_d, sizeof(double*)*DIM);
@@ -117,7 +118,7 @@ class ModelBuilder
 
 		// GEOMETRY
 		combi_malloc<double>(&geometry_h, &geometry_d, domain_data_size);
-		
+
 		// ALLOCATE OPTION ARRAYS
 		// FORCING
 		if(domain_constants_h->forcing == true)
@@ -173,10 +174,10 @@ class ModelBuilder
 	void variable_loader()
 	{
 		// LOAD GEOMETRY
-		CGNSInputHandler input_handler(project_t->domain_fname, domain_constants_h->length);
+		CGNSInputHandler input_handler((char*)project_t->domain_fname.c_str(), domain_constants_h->length);
 		input_handler.read_field(domain_h->geometry, "Porosity");
 		cudasafe(cudaMemcpy(geometry_d, geometry_h, sizeof(double)*domain_size,cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
-		
+
 		// LOAD FORCES IF REQUIRED
 		if(domain_constants_h->forcing == true)
 		{
@@ -254,7 +255,7 @@ public:
 
 };
 
-ModelBuilder::ModelBuilder (char *input_filename, Lattice *lattice_host, Lattice *lattice_device, DomainConstant *domain_constants_host, DomainConstant *domain_constants_device, Domain *domain_host, Domain *domain_device, OutputController *output_controller_host, OutputController *output_controller_device, Timing *time, ProjectStrings *project) 
+ModelBuilder::ModelBuilder (char *input_filename, Lattice *lattice_host, Lattice *lattice_device, DomainConstant *domain_constants_host, DomainConstant *domain_constants_device, Domain *domain_host, Domain *domain_device, OutputController *output_controller_host, OutputController *output_controller_device, Timing *time, ProjectStrings *project)
 {
 	lattice_h= lattice_host;
 	lattice_d= lattice_device;
@@ -280,3 +281,4 @@ ModelBuilder::ModelBuilder (char *input_filename, Lattice *lattice_host, Lattice
 ModelBuilder::ModelBuilder (){}
 
 #endif
+

@@ -2,7 +2,7 @@
 #define DATA_TYPES_H
 
 #include "macros.cu"
-
+#include <string>
 // Define a struct which represents the D2Q9 lattice
 typedef struct 
 {
@@ -73,9 +73,9 @@ typedef struct
 
 typedef struct
 {
-	char name[STR_LENGTH];
-	char domain_fname[STR_LENGTH];
-	char output_fname[STR_LENGTH];
+	std::string name;
+	std::string domain_fname;
+	std::string output_fname;
 } ProjectStrings;
 
 // Solver function pointers for boundary conditions and collisions
