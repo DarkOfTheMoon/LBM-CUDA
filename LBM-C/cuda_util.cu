@@ -7,7 +7,6 @@ template<class T>
 void combi_malloc(T **host_pointer, T **device_pointer, size_t size)
 {
 	*host_pointer = (T *)malloc(size);
-	std::cout<<__FILE__<<":"<<__LINE__<<std::endl;
 	cudasafe(cudaMalloc((void **)&*device_pointer,size), "Model Builder: Device memory allocation failed!");
 }
 
