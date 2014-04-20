@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" ?>
+<Project>
+	<ProjName>testProj1</ProjName>
+	<DomainFile> DomainFile </DomainFile>
+	<OutputFile>out.hdf5</OutputFile>
+	<TauMRT>
+		<TauMRT0>1.0</TauMRT0>
+		<TauMRT1>1.0</TauMRT1>
+		<TauMRT2>1.0</TauMRT2>
+		<TauMRT3>1.0</TauMRT3>
+		<TauMRT4>1.0</TauMRT4>
+		<TauMRT5>1.0</TauMRT5>
+		<TauMRT6>1.0</TauMRT6>
+		<TauMRT7>1.0</TauMRT7>
+		<TauMRT8>1.0</TauMRT8>
+	</TauMRT>
+	<Tau>1.0</Tau>
+	<Geometry>
+		<DeltaX>0.1</DeltaX>
+		<x>100</x>
+		<y>100</y>
+	</Geometry>
+
+	<DeltaT>0.1</DeltaT>
+	<C_smag>0.3</C_smag>
+	<ColType>0</ColType>
+	<Force></Force>
+	<MicroBC></MicroBC>
+	<MacroBC></MacroBC>
+	<Tolerance>0.000001</Tolerance>
+	<Init>1</Init>
+	<MaxT>1000</MaxT>
+	<FileOut>10</FileOut>
+	<ScreenMes></ScreenMes>
+	<SteadyCheck>1</SteadyCheck>
+	<OutputVars>
+		<u>true</u>
+		<v>false</v>
+		<rho>1</rho>
+		<pressure>1</pressure>
+	</OutputVars>
+	<ScreenNode>
+		<x>50</x>
+		<y>50</y>
+	</ScreenNode>
+	<Interactive>1</Interactive>
+</Project>
