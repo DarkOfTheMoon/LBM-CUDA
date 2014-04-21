@@ -38,9 +38,9 @@
 #include "TINYXML_xmlIO.h"
 #include <typeinfo>
 #include <cctype>
+#include <algorithm>
 
-// namespace plb {
-
+std::string tolower(std::string arg);
 template <typename T>
 void XMLreaderProxy::read ( T& value ) const
 {
@@ -62,8 +62,7 @@ inline void XMLreaderProxy::read<bool> ( bool& value ) const
     std::string word;
     valueStr >> word;
     // Transform to lower-case, so that "true" and "false" are case-insensitive.
-//TODO :FIX THIS
-// 	word = util::tolower(word);
+ 	word = tolower(word);
     if ( word=="true" )
     {
         value = true;
@@ -109,8 +108,7 @@ inline bool XMLreaderProxy::readNoThrow<bool> ( bool& value ) const
     std::string word;
     valueStr >> word;
     // Transform to lower-case, so that "true" and "false" are case-insensitive.
-    //TODO FIX THIS
-//     word = util::tolower(word);
+    word = tolower(word);
     if ( word=="true" )
     {
         value = true;

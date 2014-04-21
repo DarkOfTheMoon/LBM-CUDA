@@ -34,6 +34,11 @@
 #include <fstream>
 
 // namespace plb {
+std::string tolower(std::string arg) {
+	std::string result(arg.size(), ' ');
+	std::transform(arg.begin(), arg.end(), result.begin(), (int (*)(int))std::tolower);
+	return result;
+}
 
 XMLreader XMLreader::notFound;
 
