@@ -9,6 +9,7 @@
 #include "infile_reader.cu"
 #include "cgns/cgns_input_handler.cu"
 #include "cuda_runtime.h"
+#include "cuda_runtime_api.h"
 #include "device_launch_parameters.h"
 #include "cuda_util.cu"
 using namespace std;
@@ -76,10 +77,9 @@ class ModelBuilder
 		{
 			domain_constants_h->residual[i] = 1;
 		}
-
 		//transfer domain_constants to device (cant think of a better place to put this)
-		//cudasafe(cudaMemcpy(domain_constants_d, domain_constants_h, sizeof(DomainConstant),cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
-		cudasafe(cudaMemcpyToSymbol("domain_constants", domain_constants_h, sizeof(DomainConstant)),"Model Builder: Copy to device memory failed!");
+		cudasafe(cudaMemcpy(domain_constants_d, domain_constants_h, sizeof(DomainConstant),cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
+// 		cudasafe(cudaMemcpyToSymbol("domain_constants", domain_constants_h, sizeof(DomainConstant)),"Model Builder: Copy to device memory failed!");
 		cudasafe(cudaMemcpy(output_controller_d, output_controller_h, sizeof(OutputController),cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
 	}
 
@@ -174,7 +174,8 @@ class ModelBuilder
 	void variable_loader()
 	{
 		// LOAD GEOMETRY
-		CGNSInputHandler input_handler(project_t->domain_fname, domain_constants_h->length);
+		//TODO:此处要加载一个文件，需要分析这个文件格式；
+		CGNSInputHandler input_handler ( project_t->domain_fname, domain_constants_h->length);
 		input_handler.read_field(domain_h->geometry, "Porosity");
 		cudasafe(cudaMemcpy(geometry_d, geometry_h, sizeof(double)*domain_size,cudaMemcpyHostToDevice),"Model Builder: Copy to device memory failed!");
 

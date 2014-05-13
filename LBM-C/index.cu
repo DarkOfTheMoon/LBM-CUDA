@@ -80,10 +80,11 @@ CGNSOutputHandler output_handler;
 int main ( int argc, char **argv )
 {
 
-	if(argc!=2){
-		std::cout <<"Please Input The Parameter File !\n";
-		exit(-1);
-	}
+    if ( argc!=2 )
+    {
+        std::cout <<"Please Input The Parameter File !\n";
+        exit ( -1 );
+    }
     // Get available memory on graphics card before allocation
     size_t freeMemory_before = 0;
     size_t totalMemory_before = 0;
@@ -207,7 +208,7 @@ void setup ( char *data_file )
 #if DIM > 2
     z_len = domain_constants_host->length[2];
 #endif
-    CGNSOutputHandler tmp ( (char *)project->output_fname.c_str(),domain_constants_host->length[0],domain_constants_host->length[1],z_len );
+    CGNSOutputHandler tmp ( ( char * ) project->output_fname.c_str(),domain_constants_host->length[0],domain_constants_host->length[1],z_len );
     output_handler = tmp;
 }
 

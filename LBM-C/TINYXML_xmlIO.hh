@@ -29,18 +29,12 @@
 #ifndef XML_IO_HH
 #define XML_IO_HH
 
-// #include "libraryInterfaces/TINYXML_xmlIO.h"
-// #include "core/runTimeDiagnostics.h"
-// #include "core/globalDefs.h"
-// #include "core/util.h"
-// #include "parallelism/mpiManager.h"
-// #include "io/parallelIO.h"
 #include "TINYXML_xmlIO.h"
 #include <typeinfo>
 #include <cctype>
 #include <algorithm>
 
-std::string tolower(std::string arg);
+// std::string tolower ( std::string arg );
 template <typename T>
 void XMLreaderProxy::read ( T& value ) const
 {
@@ -62,7 +56,8 @@ inline void XMLreaderProxy::read<bool> ( bool& value ) const
     std::string word;
     valueStr >> word;
     // Transform to lower-case, so that "true" and "false" are case-insensitive.
- 	word = tolower(word);
+//     word = tolower ( word );
+	std::for_each(word.begin(),word.end(),tolower);
     if ( word=="true" )
     {
         value = true;
@@ -73,8 +68,7 @@ inline void XMLreaderProxy::read<bool> ( bool& value ) const
     }
     else
     {
-#warning fix this
-//         plbIOError(std::string("Cannot read boolean value from XML element ") + reader->getName());
+        std::cerr<<"Cannot read boolean value from XML element " << reader->getName();
     }
 }
 
@@ -82,7 +76,7 @@ template <>
 inline void XMLreaderProxy::read<std::string> ( std::string& entry ) const
 {
     if ( !reader ) return;
-	std::cout<<entry<<std::endl;
+    std::cout<<entry<<std::endl;
     entry = reader->getText ( id );
 }
 
@@ -108,7 +102,7 @@ inline bool XMLreaderProxy::readNoThrow<bool> ( bool& value ) const
     std::string word;
     valueStr >> word;
     // Transform to lower-case, so that "true" and "false" are case-insensitive.
-    word = tolower(word);
+	std::for_each(word.begin(),word.end(),tolower);
     if ( word=="true" )
     {
         value = true;

@@ -82,7 +82,6 @@ class InfileReader
 		document["Project"]["OutPutController"]["ScreenNode"]["z"].read ( output_controller->screen_node[2] );
 #endif
 		document["Project"]["OutPutController"]["Interactive"].read ( output_controller->interactive );
-		exit(0);
     }
 
 public:

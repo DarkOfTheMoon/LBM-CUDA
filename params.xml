@@ -34,7 +34,7 @@
 	<Timer>
 		<MaxT>1000</MaxT>
 		<FileOut>10</FileOut>
-		<ScreenMes></ScreenMes>
+		<ScreenMes>1</ScreenMes>
 		<SteadyCheck>1</SteadyCheck>
 	</Timer>
 	<OutPutController>
